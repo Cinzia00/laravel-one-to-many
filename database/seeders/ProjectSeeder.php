@@ -27,3 +27,4 @@ class ProjectSeeder extends Seeder
         }
     }
 }
+
