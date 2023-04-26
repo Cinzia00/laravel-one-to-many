@@ -44,6 +44,22 @@
                 </tr>  
             </tbody>
         </table>
+        <div class="mb-3">
+            <label for="project-id" class="form-label">Categoria</label>
+            <select class="form-select @error('project_id') is-invalid @enderror" id="project-id" name="project_id" aria-label="Default select example">
+                <option value="" selected>Seleziona categoria</option>
+                @foreach($types as $type)
+                <option @selected( old('project_id') == $type->id ) value="{{ $type->id }}">{{ $type->name }}</option>
+                @endforeach
+            </select>
+            {{-- <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" id="title" aria-describedby="titleHelp"> --}}
+            {{-- errore title --}}
+            @error('category_id')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
         <button type="submit" class="btn btn-primary">Salva</button>
     </form>
 </div>

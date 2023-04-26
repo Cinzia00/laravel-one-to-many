@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Type;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +32,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('projects.create');
+        $types = Type::orderBy('name', 'asc')->get();
+
+        return view('projects.create', compact('types'));
     }
 
     /**
@@ -47,18 +50,12 @@ class ProjectController extends Controller
             'description' => 'string|nullable',
             'slug' => 'string|required',
             'project_image' => 'string|nullable',
+            'project_id' => 'nullable|exists:types,id'
         ]);
-        $new_project = new Project();
-        $new_project->title = $data['title'];
-        $new_project->description = $data['description'];
-        $new_project->slug = $data['slug'];
-        $new_project->project_image = $data['project_image'];
-        $new_project->save();
-        $result = [
-            'project' => $new_project
-        ];
 
-        return view('projects.show', $result);
+        $project = Project::create($data);
+
+        return to_route('projects.show', $project);
     }
 
     /**
